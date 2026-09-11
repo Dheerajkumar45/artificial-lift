@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SRP Pro Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="srp-background"></div>
+
+  <nav class="top-nav">
+    <div class="brand">
+      <div class="logo">ONGC</div>
+      <div class="app-title">API RP 11L Sucker Rod Simulator</div>
+    </div>
+    <div class="user-status">
+      <button id="unit_toggle" class="unit-toggle-btn">⚙️ Switch to Metric (kg, m)</button>
+      <span class="status-dot"></span> Live Computation Active
+    </div>
+  </nav>
+
+  <main class="app-container">
+    
+    <!-- LEFT: Input Configuration -->
+    <section class="configuration-panel">
+      <div class="panel-header">
+        <h2>Wellbore Configuration</h2>
+        <p>Adjust parameters to instantly recalculate loads.</p>
+      </div>
+
+      <div class="input-section">
+        <h3>Well & Fluid Properties</h3>
+        <div class="input-grid">
+          <div class="input-wrapper"><label>Fluid Level (ft)</label><input type="number" id="in_H" value="4500"></div>
+          <div class="input-wrapper"><label>Pump Depth (ft)</label><input type="number" id="in_L" value="5000"></div>
+          <div class="input-wrapper"><label>Specific Gravity</label><input type="number" id="in_G" value="0.9" step="0.01"></div>
+        </div>
+      </div>
+
+      <div class="input-section">
+        <h3>Surface Unit & Downhole Pump</h3>
+        <div class="input-grid">
+          <div class="input-wrapper"><label>Speed (SPM)</label><input type="number" id="in_N" value="16"></div>
+          <div class="input-wrapper"><label>Surface Stroke (in)</label><input type="number" id="in_S" value="54"></div>
+          <div class="input-wrapper"><label>Plunger Dia (in)</label><input type="number" id="in_D" value="1.50" step="0.25"></div>
+        </div>
+      </div>
+
+      <div class="input-section">
+        <h3>Hardware Standards</h3>
+        <div class="input-grid">
+          <div class="input-wrapper">
+            <label>API Rod Taper</label>
+            <select id="in_api_string">
+              <option value="76" selected>API 76 (7/8" & 3/4")</option>
+              <option value="86">API 86 (1", 7/8", 3/4")</option>
+              <option value="66">API 66 (3/4" & 5/8")</option>
+            </select>
+          </div>
+          <div class="input-wrapper">
+            <label>Tubing Anchored?</label>
+            <select id="in_anchored">
+              <option value="no" selected>No (Unanchored)</option>
+              <option value="yes">Yes (Anchored)</option>
+            </select>
+          </div>
+          <div class="input-wrapper">
+            <label>Tubing Size (OD)</label>
+            <select id="in_tubing">
+              <option value="1.900">1.5" (1.900" OD)</option>
+              <option value="2.375" selected>2.0" (2.375" OD)</option>
+              <option value="2.875">2.5" (2.875" OD)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Results & Visualization -->
+    <section class="results-panel">
+      
+      <!-- VISUALIZATION DASHBOARD -->
+      <div class="visual-card">
+        
+        <!-- Kinematic Animation -->
+        <div class="visual-section">
+          <h4>Live Kinematic Simulator</h4>
+          <p class="visual-desc">Animation speed is dynamically synced to your SPM input.</p>
+          <div class="css-pump-container">
+            <div class="pump-rig">
+              <div class="samson-post"></div>
+              <div class="walking-beam" id="anim_beam"><div class="horsehead"></div></div>
+              <div class="polished-rod" id="anim_rod"></div>
+              <div class="wellhead"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- NEW: Interactive Component Architecture -->
+        <div class="visual-section">
+          <h4>Interactive System Architecture</h4>
+          <p class="visual-desc">Select a component to view its engineering function.</p>
+          
+          <div class="interactive-schematic">
+            
+            <!-- Left: Clickable Component Tree -->
+            <div class="schematic-tree">
+              <div class="tree-node active" data-component="motor">Prime Mover & Gearbox</div>
+              <div class="tree-node" data-component="beam">Walking Beam & Horsehead</div>
+              <div class="tree-node" data-component="wellhead">Wellhead & Stuffing Box</div>
+              <div class="tree-node" data-component="rods">Sucker Rod String</div>
+              <div class="tree-node" data-component="tubing">Tubing & Casing</div>
+              <div class="tree-node" data-component="pump">Downhole Pump Assembly</div>
+            </div>
+            
+            <!-- Right: Dynamic Description Panel -->
+            <div class="schematic-details">
+              <div class="detail-icon" id="detail_icon">⚙️</div>
+              <h5 id="detail_title">Prime Mover & Gearbox</h5>
+              <p id="detail_text">Provides the raw rotational power (electric motor or gas engine). The gear reducer scales the high-speed motor rotation into the high-torque, low-speed rotation required to lift heavy fluid columns.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card highlight-blue">
+          <div class="kpi-title">Pump Displacement</div>
+          <div class="kpi-value"><span id="out_14">--</span> <span class="unit" id="unit_14">bpd</span></div>
+        </div>
+        <div class="kpi-card highlight-red">
+          <div class="kpi-title">Peak Polished Rod Load</div>
+          <div class="kpi-value"><span id="out_23">--</span> <span class="unit" id="unit_23">lbs</span></div>
+        </div>
+        <div class="kpi-card highlight-orange">
+          <div class="kpi-title">Peak Gearbox Torque</div>
+          <div class="kpi-value"><span id="out_25">--</span> <span class="unit" id="unit_25">in-lbs</span></div>
+        </div>
+      </div>
+
+      <div class="details-container">
+        <div class="data-group">
+          <h3>Load & Power Requirements</h3>
+          <div class="data-row"><span>Minimum Polished Rod Load (MPRL)</span><div class="val-box"><span id="out_24">--</span> <span id="unit_24">lbs</span></div></div>
+          <div class="data-row"><span>Polished Rod Horsepower (PRHP)</span><div class="val-box"><span id="out_26">--</span> <span id="unit_26">HP</span></div></div>
+          <div class="data-row"><span>Counterbalance Effect Required (CBE)</span><div class="val-box"><span id="out_27">--</span> <span id="unit_27">lbs</span></div></div>
+          <div class="data-row"><span>Static Fluid Load on Plunger (Fo)</span><div class="val-box"><span id="out_5">--</span> <span id="unit_5">lbs</span></div></div>
+        </div>
+        <div class="data-row-divider"></div>
+        <div class="data-group">
+          <h3>Rod & Tubing Mechanics</h3>
+          <div class="data-row"><span>Average Rod Weight in Air (Wr)</span><div class="val-box"><span id="out_Wr">--</span> <span id="unit_Wr">lbs/ft</span></div></div>
+          <div class="data-row"><span>Total Rod Weight in Fluid (Wrf)</span><div class="val-box"><span id="out_16">--</span> <span id="unit_16">lbs</span></div></div>
+          <div class="data-row"><span>Rod Elasticity Constant (Eᵣ)</span><div class="val-box"><span id="out_Er">--</span> ×10⁻⁶</div></div>
+          <div class="data-row"><span>Effective Plunger Stroke (Sp)</span><div class="val-box"><span id="out_13">--</span> <span id="unit_13">inches</span></div></div>
+        </div>
+        <div class="data-row-divider"></div>
+        <div class="data-group">
+          <h3>API Dimensionless Diagnostics</h3>
+          <div class="data-row"><span>Speed Ratio (Harmonic Risk) (N/No)</span><div class="val-box" id="out_9">--</div></div>
+          <div class="data-row"><span>Rod Stretch Ratio (Fo/Skr)</span><div class="val-box" id="out_8">--</div></div>
+          <div class="data-row"><span>Stroke Factor (Sₚ/S)</span><div class="val-box" id="out_SpS">--</div></div>
+          <div class="data-row"><span>Peak Load Factor (F₁/Skᵣ)</span><div class="val-box" id="out_F1">--</div></div>
+          <div class="data-row"><span>Torque Factor (2T/S²kᵣ)</span><div class="val-box" id="out_T2">--</div></div>
+        </div>
+      </div>
+
+      <!-- AI Recommendation Engine -->
+      <div class="ai-recommendation-card">
+        <div class="ai-header">
+          <span class="ai-icon">⚡</span>
+          <h3>AI Expert Recommendations</h3>
+        </div>
+        <div class="ai-content">
+          <div class="ai-block">
+            <h4>Recommended Pumping Unit</h4>
+            <p id="ai_unit_suggestion">Analyzing loads...</p>
+          </div>
+          <div class="ai-block">
+            <h4>WOR Running Sequence</h4>
+            <p id="ai_rod_sequence">Analyzing taper...</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

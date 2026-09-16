@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pump Sim | API RP 11L</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Industrial Blueprint Background -->
+  <div class="srp-background"></div>
+  <div class="tech-grid-overlay"></div>
+
+  <!-- PREMIUM NAVIGATION BAR -->
+  <nav class="top-nav">
+    <div class="brand" onclick="goHome()" style="cursor: pointer;">
+      <div class="logo">PS</div>
+      <div class="app-title">PUMP SIM</div>
+    </div>
+    
+    <div class="nav-links">
+      <a href="#" onclick="goHome()">DASHBOARD</a>
+      <a href="#" onclick="requireAuth(launchSimulator)">SIMULATOR</a>
+      <a href="#footer-section">SUPPORT</a>
+    </div>
+
+    <div class="user-status">
+      <button id="unit_toggle" class="unit-toggle-btn" style="display: none;">⚙️ METRIC / IMPERIAL</button>
+      <div class="user-profile-badge" id="nav_user_badge" style="display: none;">
+        <div class="avatar-small" id="nav_avatar">U</div>
+        <span id="nav_username">User</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- AUTHENTICATION MODAL -->
+  <div id="auth-modal" class="modal-overlay hidden-view">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="logo" style="margin: 0 auto 1rem auto; width: fit-content; border-radius: 4px;">PS</div>
+        <h2>SYSTEM LOGIN</h2>
+        <p>Authentication required for Simulator Access</p>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper" style="margin-bottom: 1.5rem;">
+          <label>OPERATOR NAME</label>
+          <input type="text" id="auth_name" placeholder="e.g. John Doe">
+        </div>
+        <div class="input-wrapper" style="margin-bottom: 2rem;">
+          <label>EMAIL ADDRESS</label>
+          <input type="email" id="auth_email" placeholder="name@company.com">
+          <span id="auth_error" style="color: #ef4444; font-size: 0.8rem; display: none; margin-top: 0.5rem;">Valid email address required.</span>
+        </div>
+        <button class="launch-btn industrial-btn" style="width: 100%;" onclick="authenticateUser()">AUTHENTICATE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- WELCOME HOME PAGE SECTION                  -->
+  <!-- ========================================== -->
+  <section id="welcome-section" class="welcome-container active-view">
+    
+    <div class="industrial-hero">
+      <!-- Left side: Technical Text -->
+      <div class="hero-text-content">
+        <div class="tech-badge"><span>SYS.01</span> API 11L KINEMATICS ENGINE</div>
+        <h1 class="hero-title">PUMP SIM</h1>
+        <h2 class="hero-subtitle">Advanced Artificial Lift Diagnostics</h2>
+        <p class="hero-description">The global industrial standard for Sucker Rod Pumping system design, optimization, and real-time dynamometer diagnostics. Engineered for maximum production efficiency and structural integrity.</p>
+        
+        <div class="hero-actions">
+          <button class="launch-btn industrial-btn" onclick="requireAuth(launchSimulator)">
+            INITIATE SIMULATOR <span class="arrow">→</span>
+          </button>
+        </div>
+
+        <div class="industrial-stats">
+          <div class="stat-box">
+            <span class="stat-val">API 11L</span>
+            <span class="stat-label">COMPLIANT CORE</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-val">QROD</span>
+            <span class="stat-label">STYLE DYNAMOMETER</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right side: Technical Image Frame -->
+      <div class="hero-image-content">
+        <div class="technical-image-frame">
+          <div class="frame-corner top-left"></div>
+          <div class="frame-corner top-right"></div>
+          <div class="frame-corner bottom-left"></div>
+          <div class="frame-corner bottom-right"></div>
+          <img src="al-sucker-rod-pumps-hero_3.jpg" alt="Sucker Rod Pump">
+          <div class="image-overlay-scanline"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC OPERATOR PROFILE SECTION -->
+    <div class="profile-section" id="operator_profile" style="display: none; margin-top: 4rem;">
+      <h3 class="section-heading">ACTIVE SESSION IDENTITY</h3>
+      <div class="profile-card">
+        <div class="profile-avatar-large" id="profile_avatar">U</div>
+        <div class="profile-info">
+          <h4 id="profile_name">User Name</h4>
+          <p class="title" id="profile_email">user@company.com</p>
+          <p class="location">📍 System Access Granted</p>
+          <div class="profile-tags">
+            <span>CLEARANCE: ENGINEERING LEVEL</span>
+            <span>API 11L SIMULATOR ACTIVE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFESSIONAL FOOTER -->
+    <footer id="footer-section" class="modern-footer">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>PUMP SIM ENGINEERING</h4>
+          <p>Providing cutting-edge simulation tools for petroleum production engineers to optimize wellbore kinetics and string architecture.</p>
+        </div>
+        <div class="footer-col">
+          <h4>QUICK LINKS</h4>
+          <ul>
+            <li><a href="#" onclick="requireAuth(launchSimulator)">Launch API 11L Engine</a></li>
+            <li><a href="#">View Saved Configurations</a></li>
+            <li><a href="#">API Documentation</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>SUPPORT & CONTACT</h4>
+          <ul>
+            <li>📞 Global Helpdesk: 1-800-555-PUMP</li>
+            <li>✉️ support@pumpsim.app</li>
+            <li>🏢 Technical Operations Hub</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Pump Sim Software Division. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- CALCULATOR / SIMULATOR SECTION             -->
+  <!-- ========================================== -->
+  <main id="calculator-section" class="app-container hidden-view">
+    
+    <div class="sim-action-bar">
+      <button class="action-btn secondary" onclick="goHome()">🔙 BACK TO DASHBOARD</button>
+      <div class="action-right">
+        <span id="save-status" class="save-status"></span>
+        <button class="action-btn outline" onclick="exportData()">📥 EXPORT REPORT</button>
+        <button class="action-btn primary" onclick="saveConfiguration()">💾 SAVE CONFIG</button>
+      </div>
+    </div>
+
+    <div class="simulator-grid">
+      <section class="configuration-panel">
+        <div class="panel-header">
+          <h2>WELLBORE CONFIGURATION</h2>
+          <p>Adjust parameters to instantly recalculate loads.</p>
+        </div>
+
+        <div class="input-section">
+          <h3>Well & Fluid Properties</h3>
+          <div class="input-grid">
+            <div class="input-wrapper"><label>Fluid Level (ft)</label><input type="number" id="in_H" value="4500"></div>
+            <div class="input-wrapper"><label>Pump Depth (ft)</label><input type="number" id="in_L" value="5000"></div>
+            <div class="input-wrapper"><label>Specific Gravity</label><input type="number" id="in_G" value="0.9" step="0.01"></div>
+          </div>
+        </div>
+
+        <div class="input-section">
+          <h3>Surface Unit & Downhole Pump</h3>
+          <div class="input-grid">
+            <div class="input-wrapper"><label>Speed (SPM)</label><input type="number" id="in_N" value="16"></div>
+            <div class="input-wrapper"><label>Surface Stroke (in)</label><input type="number" id="in_S" value="54"></div>
+            <div class="input-wrapper"><label>Plunger Dia (in)</label><input type="number" id="in_D" value="1.50" step="0.25"></div>
+          </div>
+        </div>
+
+        <div class="input-section">
+          <h3>Hardware Standards</h3>
+          <div class="input-grid">
+            <div class="input-wrapper">
+              <label>API Rod Taper</label>
+              <select id="in_api_string">
+                <option value="76" selected>API 76 (7/8" & 3/4")</option>
+                <option value="86">API 86 (1", 7/8", 3/4")</option>
+                <option value="66">API 66 (3/4" & 5/8")</option>
+              </select>
+            </div>
+            <div class="input-wrapper">
+              <label>Tubing Anchored?</label>
+              <select id="in_anchored">
+                <option value="no" selected>No (Unanchored)</option>
+                <option value="yes">Yes (Anchored)</option>
+              </select>
+            </div>
+            <div class="input-wrapper">
+              <label>Tubing Size (OD)</label>
+              <select id="in_tubing">
+                <option value="1.900">1.5" (1.900" OD)</option>
+                <option value="2.375" selected>2.0" (2.375" OD)</option>
+                <option value="2.875">2.5" (2.875" OD)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="results-panel">
+        
+        <div class="visual-card">
+          <div class="visual-section">
+            <h4>LIVE KINEMATIC SIMULATOR</h4>
+            <div class="css-pump-container">
+              <div class="pump-rig">
+                <div class="xmas-tree"><div class="xmas-base"></div><div class="xmas-pipe"></div><div class="xmas-valve left"></div><div class="xmas-valve right"></div><div class="stuffing-box"></div></div>
+                <div class="polished-rod" id="anim_rod"></div>
+                <div class="rig-base"></div><div class="samson-post"></div><div class="samson-support"></div>
+                <div class="gearbox"><div class="crank-arm" id="anim_crank"><div class="counterweight"></div></div></div>
+                <div class="walking-beam" id="anim_beam"><div class="horsehead"></div></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="visual-section">
+            <h4>SYSTEM ARCHITECTURE</h4>
+            <div class="interactive-schematic">
+              <div class="schematic-tree">
+                <div class="tree-node active" data-component="motor">Prime Mover & Gearbox</div>
+                <div class="tree-node" data-component="beam">Walking Beam</div>
+                <div class="tree-node" data-component="wellhead">Wellhead Assembly</div>
+                <div class="tree-node" data-component="rods">Sucker Rod String</div>
+                <div class="tree-node" data-component="tubing">Tubing & Casing</div>
+                <div class="tree-node" data-component="pump">Downhole Pump</div>
+              </div>
+              <div class="schematic-details">
+                <div class="detail-icon" id="detail_icon">⚙️</div>
+                <h5 id="detail_title">Prime Mover & Gearbox</h5>
+                <p id="detail_text">Provides the raw rotational power (electric motor or gas engine). The gear reducer scales the high-speed motor rotation into the high-torque, low-speed rotation required to lift heavy fluid columns.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dynamo-card">
+          <h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #334155; padding-bottom:0.5rem; color:#fff;">DYNAMOMETER DIAGNOSTICS</h3>
+          <div class="dyno-legend">
+            <span class="legend-item"><div class="color-box surface-box"></div> Surface Card</span>
+            <span class="legend-item"><div class="color-box pump-box"></div> Downhole Pump Card</span>
+          </div>
+          <div class="canvas-container">
+            <canvas id="dynoCanvas" width="800" height="350"></canvas>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card highlight-blue">
+            <div class="kpi-title">Pump Displacement</div>
+            <div class="kpi-value"><span id="out_14" class="mono-font">--</span> <span class="unit" id="unit_14">bpd</span></div>
+          </div>
+          <div class="kpi-card highlight-red">
+            <div class="kpi-title">Peak Polished Rod Load</div>
+            <div class="kpi-value"><span id="out_23" class="mono-font">--</span> <span class="unit" id="unit_23">lbs</span></div>
+          </div>
+          <div class="kpi-card highlight-orange">
+            <div class="kpi-title">Peak Gearbox Torque</div>
+            <div class="kpi-value"><span id="out_25" class="mono-font">--</span> <span class="unit" id="unit_25">in-lbs</span></div>
+          </div>
+        </div>
+
+        <div class="details-container">
+          <div class="data-group">
+            <h3>LOAD & POWER REQUIREMENTS</h3>
+            <div class="data-row"><span>Min Polished Rod Load (MPRL)</span><div class="val-box"><span id="out_24" class="mono-font">--</span> <span id="unit_24">lbs</span></div></div>
+            <div class="data-row"><span>Polished Rod Power (PRHP)</span><div class="val-box"><span id="out_26" class="mono-font">--</span> <span id="unit_26">HP</span></div></div>
+            <div class="data-row"><span>Counterbalance Effect (CBE)</span><div class="val-box"><span id="out_27" class="mono-font">--</span> <span id="unit_27">lbs</span></div></div>
+            <div class="data-row"><span>Static Fluid Load (Fo)</span><div class="val-box"><span id="out_5" class="mono-font">--</span> <span id="unit_5">lbs</span></div></div>
+          </div>
+          <div class="data-row-divider"></div>
+          <div class="data-group">
+            <h3>API DIAGNOSTICS</h3>
+            <div class="data-row"><span>Speed Ratio (N/No)</span><div class="val-box mono-font" id="out_9">--</div></div>
+            <div class="data-row"><span>Rod Stretch Ratio (Fo/Skr)</span><div class="val-box mono-font" id="out_8">--</div></div>
+            <div class="data-row"><span>Stroke Factor (Sₚ/S)</span><div class="val-box mono-font" id="out_SpS">--</div></div>
+          </div>
+        </div>
+
+        <div class="ai-recommendation-card">
+          <div class="ai-header"><span class="ai-icon">⚡</span><h3>AI EXPERT RECOMMENDATIONS</h3></div>
+          <div class="ai-content">
+            <div class="ai-block">
+              <h4>Recommended Unit</h4>
+              <p id="ai_unit_suggestion">Analyzing loads...</p>
+            </div>
+            <div class="ai-block">
+              <h4>Rod Taper Design & Sequence</h4>
+              <p id="ai_rod_sequence">Analyzing taper...</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
